@@ -1,32 +1,45 @@
 package com.example.javamvcdemo.controllers;
 
+import com.example.javamvcdemo.dto.request.UserCreationRequest;
+import com.example.javamvcdemo.dto.request.UserUpdateRequest;
 import com.example.javamvcdemo.models.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
+import com.example.javamvcdemo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private IUserRepository userRepository;
+    private UserService userService;
 
-    @PostMapping("/create")
-    public User createUser(@RequestBody User user){
-        return userRepository.save(user);
+    @PostMapping
+    public User createUser(@RequestBody UserCreationRequest request){
+        return userService.createRequest(request);
     }
 
-    @GetMapping("/{username}")
-    public User getUser(@PathVariable String username){
-        return userRepository.findByUsername(username);
+    @GetMapping
+    public List<User> getUsers(){
+        return userService.getUsers();
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String username){
-        User user = userRepository.findByUsername(username);
-        if(user == null) return ResponseEntity.notFound().build();
-        userRepository.delete(user);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/{userId}")
+    public User getUser(@PathVariable("userId") String userId){
+        return userService.getUser(userId);
+    }
+
+    @PutMapping("/{userId}")
+    public User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest){
+        return userService.updateUser(userId, userUpdateRequest);
+    }
+
+    @DeleteMapping("/{userId}")
+    public String deleteUser(@PathVariable String userId){
+        userService.deleteUser(userId);
+        return "User has been deleted";
     }
 }
