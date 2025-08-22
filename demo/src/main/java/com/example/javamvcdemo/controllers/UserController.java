@@ -3,10 +3,14 @@ package com.example.javamvcdemo.controllers;
 import com.example.javamvcdemo.dto.request.APIResponse;
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
+import com.example.javamvcdemo.dto.response.UserResponse;
 import com.example.javamvcdemo.models.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
 import com.example.javamvcdemo.services.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
-    @Autowired
-    private UserService userService;
+    UserService userService;
 
     @PostMapping
     public APIResponse<User> createUser(@RequestBody @Valid UserCreationRequest request){
@@ -34,12 +39,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable("userId") String userId){
+    public UserResponse getUser(@PathVariable("userId") String userId){
         return userService.getUser(userId);
     }
 
     @PutMapping("/{userId}")
-    public User updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest){
+    public UserResponse updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest userUpdateRequest){
         return userService.updateUser(userId, userUpdateRequest);
     }
 
