@@ -1,10 +1,12 @@
 package com.example.javamvcdemo.controllers;
 
+import com.example.javamvcdemo.dto.request.APIResponse;
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
 import com.example.javamvcdemo.models.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
 import com.example.javamvcdemo.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody UserCreationRequest request){
-        return userService.createRequest(request);
+    public APIResponse<User> createUser(@RequestBody @Valid UserCreationRequest request){
+        APIResponse<User> apiResponse = new APIResponse<>();
+
+        apiResponse.setCode(1000);
+        apiResponse.setResult(userService.createRequest(request));
+        return apiResponse;
     }
 
     @GetMapping

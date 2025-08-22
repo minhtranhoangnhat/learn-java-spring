@@ -2,13 +2,14 @@ package com.example.javamvcdemo.services;
 
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
+import com.example.javamvcdemo.exception.AppException;
+import com.example.javamvcdemo.exception.ErrorCode;
 import com.example.javamvcdemo.models.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,6 +18,9 @@ public class UserService {
 
     public User createRequest(UserCreationRequest request){
         User user = new User();
+
+        if(userRepository.existsByUsername(request.getUsername()))
+            throw new AppException(ErrorCode.USER_EXISTED);
 
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
