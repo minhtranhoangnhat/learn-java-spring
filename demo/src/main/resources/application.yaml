@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: springMVCDemo
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/saltlux_db?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+jpa:
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+
+server:
+  port: 8081
+
+jwt:
+  signerKey: "6vt5G15HnK9a/sM34qBJfUBYwn16TUVrlag9rIynmloIzWRAPo5ZSyazF5r+h7nu"

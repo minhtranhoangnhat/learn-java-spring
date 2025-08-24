@@ -1,18 +1,15 @@
 package com.example.javamvcdemo.controllers;
 
-import com.example.javamvcdemo.dto.request.APIResponse;
+import com.example.javamvcdemo.dto.response.APIResponse;
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
 import com.example.javamvcdemo.dto.response.UserResponse;
 import com.example.javamvcdemo.models.User;
-import com.example.javamvcdemo.repositories.IUserRepository;
 import com.example.javamvcdemo.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
