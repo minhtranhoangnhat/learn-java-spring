@@ -3,6 +3,7 @@ package com.example.javamvcdemo.services;
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
 import com.example.javamvcdemo.dto.response.UserResponse;
+import com.example.javamvcdemo.enums.Role;
 import com.example.javamvcdemo.exception.AppException;
 import com.example.javamvcdemo.exception.ErrorCode;
 import com.example.javamvcdemo.mapper.IUserMapper;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -24,6 +26,7 @@ import java.util.List;
 public class UserService {
     IUserRepository userRepository;
     IUserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     public User createRequest(UserCreationRequest request){
 
@@ -32,19 +35,20 @@ public class UserService {
 
         User user = userMapper.toUser(request);//map user với request
         //mã hóa mật khẩu user
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-//        user.setUsername(request.getUsername());
-//        user.setPassword(request.getPassword());
-//        user.setFirstName(request.getFirstName());
-//        user.setLastName(request.getLastName());
-//        user.setDob(request.getDob());
+
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.USER.name());
+
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }
 
-    public List<User> getUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> getUsers(){
+
+        return userRepository.findAll().stream()
+                .map(userMapper::toUserResponse).toList();
     }
 
     public UserResponse getUser(String userId) {
@@ -56,10 +60,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUser(user, request);
-//        user.setPassword(request.getPassword());
-//        user.setFirstName(request.getFirstName());
-//        user.setLastName(request.getLastName());
-//        user.setDob(request.getDob());
+
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
