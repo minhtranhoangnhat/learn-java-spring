@@ -6,7 +6,7 @@ import com.example.javamvcdemo.dto.response.AuthenticationResponse;
 import com.example.javamvcdemo.dto.response.IntrospectResponse;
 import com.example.javamvcdemo.exception.AppException;
 import com.example.javamvcdemo.exception.ErrorCode;
-import com.example.javamvcdemo.models.User;
+import com.example.javamvcdemo.entity.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -24,7 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -103,8 +102,8 @@ public class AuthenticationService {
     //scope trong oauth2 phân cách nhau bằng dấu cách
     private String buildScope(User user){
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.getRoles()))
-            user.getRoles().forEach(s -> stringJoiner.add(s));
+//        if(!CollectionUtils.isEmpty(user.getRoles()))
+//            user.getRoles().forEach(s -> stringJoiner.add(s));
         return stringJoiner.toString();
     }
 }

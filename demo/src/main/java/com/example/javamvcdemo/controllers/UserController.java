@@ -4,7 +4,7 @@ import com.example.javamvcdemo.dto.response.APIResponse;
 import com.example.javamvcdemo.dto.request.UserCreationRequest;
 import com.example.javamvcdemo.dto.request.UserUpdateRequest;
 import com.example.javamvcdemo.dto.response.UserResponse;
-import com.example.javamvcdemo.models.User;
+import com.example.javamvcdemo.entity.User;
 import com.example.javamvcdemo.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

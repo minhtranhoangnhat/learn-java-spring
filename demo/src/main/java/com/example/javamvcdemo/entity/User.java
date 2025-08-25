@@ -1,4 +1,4 @@
-package com.example.javamvcdemo.models;
+package com.example.javamvcdemo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,5 +26,7 @@ public class User {
     String firstName;
     String lastName;
     LocalDate dob;
-    Set<String> roles; //dùng set để đảm bảo tính unique của role
+
+    @ManyToMany
+    Set<Role> roles; //dùng set để đảm bảo tính unique của role
 }
