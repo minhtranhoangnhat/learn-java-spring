@@ -9,6 +9,7 @@ import com.example.javamvcdemo.exception.ErrorCode;
 import com.example.javamvcdemo.mapper.IUserMapper;
 import com.example.javamvcdemo.entity.User;
 import com.example.javamvcdemo.repositories.IUserRepository;
+import com.example.javamvcdemo.repositories.RoleRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +31,7 @@ public class UserService {
     IUserRepository userRepository;
     IUserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
     public User createRequest(UserCreationRequest request){
 
@@ -49,6 +51,7 @@ public class UserService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize(("hasAuthority('APPROVE_DATA')"))
     public List<UserResponse> getUsers(){
 
         log.info("In method getUsers");
@@ -76,7 +79,12 @@ public class UserService {
     public UserResponse updateUser(String userId, UserUpdateRequest request){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
         userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

@@ -26,7 +26,6 @@ public class User {
     String firstName;
     String lastName;
     LocalDate dob;
-
     @ManyToMany
     Set<Role> roles; //dùng set để đảm bảo tính unique của role
 }
